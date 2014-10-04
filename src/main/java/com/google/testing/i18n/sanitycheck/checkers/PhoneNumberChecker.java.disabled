@@ -1,0 +1,81 @@
+package com.google.testing.i18n.sanitycheck.checkers;
+
+import com.google.i18n.identifiers.RegionCode;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumber;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.PhoneNumberUtil.ValidationResult;
+import com.google.testing.i18n.sanitycheck.parser.Placeholder;
+
+import com.ibm.icu.util.ULocale;
+
+import org.junit.Assert;
+
+/**
+ * An object that performs sanity check of a phone number by means of the PhoneNumbers library. More
+ * information could be found here -
+ * https://sites.google.com/a/google.com/i18n-emea/libraries/phone-number-library.
+ * <p>
+ * Three different configurations are available:
+ * <p>
+ * <ul>
+ * <li>Lenient(default) - uses {@link PhoneNumberUtil#isPossibleNumber}</li>
+ * <li>Non lenient - uses {@link PhoneNumberUtil#isValidNumber}</li>
+ * <li>Non lenient + strict - uses {@link PhoneNumberUtil#isValidNumberForRegion}</li>
+ * <li>Lenien + strict is an invalid option. Lenient will be used instead</li>
+ * </ul>
+ */
+public class PhoneNumberChecker implements Checker {
+
+  @Override
+  public void check(Placeholder target, ULocale locale, String message) {
+    PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+    try {
+      RegionCode code = RegionCode.forString(locale.getCountry());
+      PhoneNumber number = phoneNumberUtil.parse(target.getActualContent(), code);
+      if (target.isLenient()) {
+        PhoneNumberUtil.ValidationResult result =
+            phoneNumberUtil.isPossibleNumberWithReason(number);
+        if (result == ValidationResult.IS_POSSIBLE) {
+          // Valid number.
+        } else {
+          String errorMessage =
+              String.format("Phone number \"%s\" is not valid.", target.getActualContent());
+          if (message == null) {
+            switch (result) {
+              case INVALID_COUNTRY_CODE:
+                errorMessage = errorMessage + " Invalid country code.";
+                break;
+              case TOO_LONG:
+                errorMessage = errorMessage + " It is too long.";
+                break;
+              case TOO_SHORT:
+                errorMessage = errorMessage + " It is too short.";
+                break;
+              default:
+                break;
+            }
+          } else {
+            errorMessage = message;
+          }
+          Assert.fail(errorMessage);
+        }
+      } else {
+        if (target.isStrict()) {
+          String errorMessage = message != null ? message
+              : String.format("Phone number \"%s\" is invalid for region %s",
+                  target.getActualContent(), code);
+          Assert.assertTrue(errorMessage, phoneNumberUtil.isValidNumberForRegion(number, code));
+        } else {
+          String errorMessage = message != null ? message
+              : String.format("Phone number \"%s\" is invalid", target.getActualContent());
+          Assert.assertTrue(errorMessage, phoneNumberUtil.isValidNumber(number));
+        }
+      }
+    } catch (NumberParseException e) {
+      String errorMessage = message != null ? message
+          : String.format("Phone number \"%s\" is not valid.", target.getActualContent());
+      throw new AssertionError(errorMessage, e);
+    }
+  }
+}
