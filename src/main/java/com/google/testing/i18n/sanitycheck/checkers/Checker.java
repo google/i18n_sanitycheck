@@ -36,7 +36,6 @@ public interface Checker {
       .put("time", new TimeDateChecker(new TimeStringFormatProducer()))
       .put("date", new TimeDateChecker(new DateStringFormatProducer()))
       .put("datetime", new TimeDateChecker(new DateTimeStringFormatProducer()))
-      //.put("phone", new PhoneNumberChecker())
       .put("number", new NumberChecker())
       .put("timezone", new TimeZoneChecker())
       .put("locale", new LocaleChecker())
