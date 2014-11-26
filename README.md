@@ -31,10 +31,10 @@ SanityCheckProcessor.assertI18nSanityCheck(
 #Placeholders
 
 Placeholder | Description
--------------------------
+------------|------------
 {ignore}    | Ignores everything within this placeholder.
-{time}      | Checks if formatted time satisfies ICU standards. Optional parameters:
-{date}      | Checks if formatted date satisfies the ICU standards.
+{time}      | Checks if formatted time satisfies ICU standards.
+{date}      | Checks if formatted date satisfies the ICU standards
 {datetime}  | Merges 2 and 3 together. Has same optional parameters.
 {number}    | Checks if formatted number satisfies the ICU standards. ould be used to check currency, rational, scientific, numbers and spelled numbers.
 {locale}    | Checks if locale code matches.
@@ -43,8 +43,8 @@ Placeholder | Description
 {period}    | checks if date time period is correct.
 
 #Additional parameters for placeholders
-Parameter | Apples To                              | Description
-----------------------------------------------------------------
+Parameter | Applies To                              | Description
+----------|----------------------------------------|------------
 pattern   | date, time, datetime                   | ICU formatting pattern (see ICU documentation for details).
 skeleton  | date, time, datetime                   | ICU skeleton - less restrictive than pattern
 value     | date, time, datetime, number           | actual value in numeric locale-independent format. For date and time - milliseconds since Jan 1, 1970
