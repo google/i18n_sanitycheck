@@ -50,3 +50,4 @@ skeleton  | date, time, datetime                   | ICU skeleton - less restric
 value     | date, time, datetime, number           | actual value in numeric locale-independent format. For date and time - milliseconds since Jan 1, 1970
 lenient   | date, time, datetime, number, timezone | Relax format validation rules
 strict    | sorting                                | Apply more strict sorting rules (see ICU documentation)
+
