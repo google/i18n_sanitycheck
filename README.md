@@ -1,3 +1,4 @@
+# i18n-Sanitychecker (by Google)
 i18n-sanitychecker is a library that allows developer to write unit-test for
 locale-sensitive functions without relying on "golden data".
 
@@ -5,12 +6,12 @@ i18n-sanitychecker provides only one public method to match actual strings
 against expected patterns. Patterns may contain placeholders for date, time,
 numbers, lists. The method behaves similar to other assert methods of JUnit.
 
-#Usage
+# Usage
 
 SanityCheckProcessor.assertI18nSanityCheck(pattern, actual_string, locale);
 
 
-#Examples
+# Examples
 
 1. Check that DOM element contains date and time in any format for Japanese:
 ```java
@@ -28,7 +29,7 @@ SanityCheckProcessor.assertI18nSanityCheck(
     "{datetime:{pattern:'dd-MM-yy'}}", value, currentLocale)
 ```
 
-#Placeholders
+# Placeholders
 
 Placeholder | Description
 ------------|------------
@@ -42,7 +43,7 @@ Placeholder | Description
 {sorting}   | Checks if the elements within the placeholder were sorted correctly according to the locale rules.
 {period}    | checks if date time period is correct.
 
-#Additional parameters for placeholders
+# Additional parameters for placeholders
 Parameter | Applies To                              | Description
 ----------|----------------------------------------|------------
 pattern   | date, time, datetime                   | ICU formatting pattern (see ICU documentation for details).
